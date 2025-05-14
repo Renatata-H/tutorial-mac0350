@@ -1,6 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.9.0"
-    id("io.ktor.plugin") version "2.3.2"
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlin.plugin.serialization)
 }
 
 application {
