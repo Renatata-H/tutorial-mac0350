@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Tutorial</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    #chat { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    .me { color: green; }
+    .other { color: blue; }
+  </style>
+</head>
+<body>
+  <h2>Chatzinho</h2>
+  <div id="chat"></div>
+
+  <input type="text" id="username" placeholder="Seu nome" />
+  <input type="text" id="message" placeholder="Digite uma mensagem..." />
+  <button onclick="sendMessage()">Enviar</button>
+  <button onclick="sendQuit()">Sair</button>
+
+  <script>
+    const socket = new WebSocket("ws://localhost:8080/chat");
+    const chatDiv = document.getElementById("chat");
+
+    socket.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      const user = document.getElementById("username").value.trim();
+      const className = (msg.username === user) ? "me" : "other";
+
+      chatDiv.innerHTML += `<div class="${className}"><b>${msg.username}</b>: ${msg.message}</div>`;
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    };
+
+    function sendMessage() {
+      const username = document.getElementById("username").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (!username || !message) {
+        alert("Preencha seu nome e a mensagem!");
+        return;
+      }
+
+      const msgObj = {
+        username: username,
+        message: message,
+        time: new Date().toISOString(),
+      };
+
+      socket.send(JSON.stringify(msgObj));
+      document.getElementById("message").value = "";
+    }
+
+    function sendQuit() {
+      const username = document.getElementById("username").value.trim();
+      if (!username) {
+        alert("Preencha seu nome para sair!");
+        return;
+      }
+
+      const quitMsg = {
+        username: username,
+        message: "quit",
+        time: new Date().toISOString(),
+      };
+
+      socket.send(JSON.stringify(quitMsg));
+    }
+  </script>
+</body>
+</html>
