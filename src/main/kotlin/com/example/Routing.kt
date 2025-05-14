@@ -2,6 +2,7 @@ package com.example
 
 import io.ktor.server.routing.*
 import io.ktor.server.application.*
+import io.ktor.server.http.content.*
 import io.ktor.server.websocket.*
 import io.ktor.websocket.*  // Importando os Frames e CloseReason corretamente
 import kotlinx.serialization.encodeToString
@@ -33,5 +34,7 @@ fun Application.configureRouting() {
                 connections.remove(this)
             }
         }
+
+        staticResources("/static", "static")
     }
 }

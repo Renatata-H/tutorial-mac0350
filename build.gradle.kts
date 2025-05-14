@@ -21,7 +21,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     implementation("io.ktor:ktor-server-cors:2.3.7")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-
+    implementation(libs.logback.classic)
     testImplementation("io.ktor:ktor-server-tests:2.3.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.0")
