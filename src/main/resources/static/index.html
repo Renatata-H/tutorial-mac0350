@@ -28,7 +28,7 @@
       const user = document.getElementById("username").value.trim();
       const className = (msg.username === user) ? "me" : "other";
 
-      chatDiv.innerHTML += `<div class="${className}"><b>${msg.username}</b>: ${msg.message}</div>`;
+      chatDiv.innerHTML += `<div class="${className}"><b>${msg.time} ${msg.username}</b>: ${msg.message}</div>`;
       chatDiv.scrollTop = chatDiv.scrollHeight;
     };
 
@@ -44,11 +44,30 @@
       const msgObj = {
         username: username,
         message: message,
-        time: new Date().toISOString(),
+        time: today(),
       };
 
       socket.send(JSON.stringify(msgObj));
       document.getElementById("message").value = "";
+    }
+
+    function today() {
+      var agora = new Date();
+
+      var options = {
+        timeZone: 'America/Sao_Paulo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      };
+
+      var dataHora = new Intl.DateTimeFormat('pt-BR', options).format(agora);
+
+      return `[${dataHora}]`
     }
 
     function sendQuit() {
@@ -61,7 +80,7 @@
       const quitMsg = {
         username: username,
         message: "quit",
-        time: new Date().toISOString(),
+        time: today(),
       };
 
       socket.send(JSON.stringify(quitMsg));
